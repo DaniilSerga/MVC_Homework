@@ -9,6 +9,11 @@ namespace MVC_Homework.Services.Implementations
     {
         private readonly ApplicationContext _context;
 
+        public BooksService(ApplicationContext context)
+        {
+            _context = context;
+        }
+
         public List<Book> GetBooks() => _context.Books.AsNoTracking().ToList();
 
         public Book Get(int id)
@@ -31,6 +36,7 @@ namespace MVC_Homework.Services.Implementations
             }
 
             _context.Books.Add(book);
+
             _context.SaveChanges();
         }
 
@@ -50,6 +56,7 @@ namespace MVC_Homework.Services.Implementations
             dbBook = book;
 
             _context.Books.Update(dbBook);
+
             _context.SaveChanges();
         }
 
@@ -63,6 +70,7 @@ namespace MVC_Homework.Services.Implementations
             }
 
             _context.Books.Remove(book);
+
             _context.SaveChanges();
         }
     }

@@ -5,6 +5,8 @@ namespace MVC_Homework.Models.DatabaseModels
     [Table("Books")]
     public class Book
     {
+        public Book() { }
+
         public int Id { get; set; }
 
         public string Name { get; set; } = "";

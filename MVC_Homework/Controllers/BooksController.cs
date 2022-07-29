@@ -31,7 +31,6 @@ namespace MVC_Homework.Controllers
         public ActionResult GetBook(int id) => Ok(_booksService.Get(id));
 
         // PUT: api/Books/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public IActionResult PutBook(int id, Book book)
         {
@@ -46,11 +45,11 @@ namespace MVC_Homework.Controllers
         }
 
         // POST: api/Books
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public IActionResult PostBook(Book book)
         {
             _booksService.Create(book);
+
             return Ok();
         }
 
