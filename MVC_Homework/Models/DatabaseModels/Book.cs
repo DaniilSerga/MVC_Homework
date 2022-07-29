@@ -11,10 +11,6 @@ namespace MVC_Homework.Models.DatabaseModels
 
         public int AuthorId { get; set; }
 
-        public int BookshelfId { get; set; }
-
         public Author Author { get; set; } = new();
-
-        public Bookshelf Bookshelf { get; set; } = new();
     }
 }

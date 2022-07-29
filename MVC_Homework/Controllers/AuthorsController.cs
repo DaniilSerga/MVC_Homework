@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_Homework.Models;
 using MVC_Homework.Models.DatabaseModels;
+using MVC_Homework.Services.Contracts;
 
 namespace MVC_Homework.Controllers
 {
@@ -14,111 +15,53 @@ namespace MVC_Homework.Controllers
     [ApiController]
     public class AuthorsController : ControllerBase
     {
-        private readonly ApplicationContext _context;
+        private readonly IAuthorsService _authorsService;
 
-        public AuthorsController(ApplicationContext context)
+        public AuthorsController(IAuthorsService authorsService)
         {
-            _context = context;
+            _authorsService = authorsService;
         }
 
         // GET: api/Authors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
-        {
-            if (_context.Authors == null)
-            {
-                return NotFound();
-            }
-            return await _context.Authors.ToListAsync();
-        }
+        public ActionResult<IEnumerable<Author>> GetAuthors() => Ok(_authorsService.GetAuthors());
 
         // GET: api/Authors/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Author>> GetAuthor(int id)
-        {
-            if (_context.Authors == null)
-            {
-                return NotFound();
-            }
-            var author = await _context.Authors.FindAsync(id);
-
-            if (author == null)
-            {
-                return NotFound();
-            }
-
-            return author;
-        }
+        public ActionResult GetAuthor(int id) => Ok(_authorsService.Get(id));
 
         // PUT: api/Authors/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAuthor(int id, Author author)
+        public IActionResult PutAuthor(int id, Author author)
         {
             if (id != author.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(author).State = EntityState.Modified;
+            _authorsService.Update(id, author);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AuthorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Authors
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Author>> PostAuthor(Author author)
+        public IActionResult PostAuthor(Author author)
         {
-            if (_context.Authors == null)
-            {
-                return Problem("Entity set 'ApplicationContext.Authors'  is null.");
-            }
-            _context.Authors.Add(author);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
+            _authorsService.Create(author);
+            
+            return Ok();
         }
 
         // DELETE: api/Authors/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAuthor(int id)
+        public IActionResult DeleteAuthor(int id)
         {
-            if (_context.Authors == null)
-            {
-                return NotFound();
-            }
-            var author = await _context.Authors.FindAsync(id);
-            if (author == null)
-            {
-                return NotFound();
-            }
+            _authorsService.Delete(id);
 
-            _context.Authors.Remove(author);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool AuthorExists(int id)
-        {
-            return (_context.Authors?.Any(e => e.Id == id)).GetValueOrDefault();
+            return Ok();
         }
     }
 }
