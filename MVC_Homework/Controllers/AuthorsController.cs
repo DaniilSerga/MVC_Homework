@@ -31,7 +31,6 @@ namespace MVC_Homework.Controllers
         public ActionResult GetAuthor(int id) => Ok(_authorsService.Get(id));
 
         // PUT: api/Authors/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public IActionResult PutAuthor(int id, Author author)
         {
@@ -46,7 +45,6 @@ namespace MVC_Homework.Controllers
         }
 
         // POST: api/Authors
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public IActionResult PostAuthor(Author author)
         {
